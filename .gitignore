@@ -1,0 +1,20 @@
+# File/folder anggota lain & gabungan
+hasil/
+kode/anggota2.py
+kode/anggota3.py
+kode/jalankan.py
+kode/contoh_demo.py
+
+# File demo buatan
+data_wav/DEMO_BUKAN_REKAMAN.wav
+
+# Python cache & temp
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# PDF materi/panduan jika tidak perlu
+Modul_PSC_Panduan_Kel3.pdf
+Tugas 1 PSC.pdf
