@@ -67,6 +67,11 @@ def proses_anggota1(file_path):
     folder = FOLDER_HASIL_ANGGOTA1 / file_path.stem
     folder.mkdir(parents=True, exist_ok=True)
 
+    # Simpan file audio WAV hasil potong agar bisa didengarkan dan dicek manual
+    wav_clip_path = folder / f'{file_path.stem}_clipping.wav'
+    from scipy.io import wavfile
+    wavfile.write(str(wav_clip_path), fs, (np.clip(potong, -1.0, 1.0) * 32767.0).astype(np.int16))
+
     # 3. Simpan 2 Gambar Grafik Khusus Tugas Anggota 1
     file_img_asli = folder / '01_sinyal_asli.png'
     file_img_clip = folder / '02_sinyal_clipping.png'
