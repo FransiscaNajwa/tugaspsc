@@ -13,8 +13,9 @@ SAMPLE_RATE = 16000          # 16 kHz (Frekuensi sampling)
 JUMLAH_BIT = 16              # 16 bit (Kuantisasi linier PCM int16)
 JUMLAH_CHANNEL = 1           # 1 (Mono)
 DURASI_POWER_MS = 20         # 20 ms per blok untuk deteksi power clipping
-THRESHOLD_K = 0.0            # K=0.0 (Threshold = mean(power)) agar konsonan akhir (seperti 'r') tidak terpotong
-MARGIN_BLOK = 2              # Margin keamanan 2 blok (40 ms) di awal & akhir sesuai Bab 11 Modul
+THRESHOLD_K = 0.0            # K=0.0 (Threshold = mean(power)) agar konsonan akhir (seperti 'r', 'k') tidak terpotong
+MARGIN_AWAL_BLOK = 3         # Margin awalan (lead-in) 3 blok (60 ms)
+MARGIN_AKHIR_BLOK = 8        # Margin akhiran (hangover) 8 blok (160 ms) agar konsonan letup/henti ('k', 'r') tuntas
 
 # Parameter Frame & Windowing (Anggota 2)
 FRAME_MS = 25                # 25 ms per frame (400 sampel pada 16 kHz)

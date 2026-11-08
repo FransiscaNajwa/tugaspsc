@@ -8,7 +8,7 @@ Tugas:
 
 import numpy as np
 from scipy.io import wavfile
-from konfigurasi import SAMPLE_RATE, JUMLAH_BIT, JUMLAH_CHANNEL, THRESHOLD_K, DURASI_POWER_MS, MARGIN_BLOK
+from konfigurasi import SAMPLE_RATE, JUMLAH_BIT, JUMLAH_CHANNEL, THRESHOLD_K, DURASI_POWER_MS, MARGIN_AWAL_BLOK, MARGIN_AKHIR_BLOK
 
 
 def baca_wav(lokasi):
@@ -43,7 +43,7 @@ def baca_wav(lokasi):
     return fs, sinyal
 
 
-def clipping_berdasarkan_power(sinyal, fs, threshold_k=THRESHOLD_K, durasi_power_ms=DURASI_POWER_MS, margin_blok=MARGIN_BLOK):
+def clipping_berdasarkan_power(sinyal, fs, threshold_k=THRESHOLD_K, durasi_power_ms=DURASI_POWER_MS, margin_awal=MARGIN_AWAL_BLOK, margin_akhir=MARGIN_AKHIR_BLOK):
     """
     Melakukan Level Clipping pada sinyal audio dengan memangkas bagian hening di awal dan akhir
     berdasarkan nilai daya (power) tiap blok pendek serta margin keamanan di batas potongan.
@@ -51,7 +51,7 @@ def clipping_berdasarkan_power(sinyal, fs, threshold_k=THRESHOLD_K, durasi_power
     Rumus:
         Power per blok: P_i = (1 / L) * sum(x[n]^2)
         Ambang batas (Threshold): Ambang = mean(P) + K * std(P)
-        Margin Keamanan: M blok ekstra di awal dan akhir agar suku kata akhir/lemah tidak terpotong.
+        Margin Keamanan: Lead-in di awal dan Hangover di akhir agar konsonan henti/lemah ('k', 'r') tidak terpotong.
     """
     panjang = max(1, round(fs * durasi_power_ms / 1000))
     nblok = int(np.ceil(len(sinyal) / panjang))
@@ -78,8 +78,8 @@ def clipping_berdasarkan_power(sinyal, fs, threshold_k=THRESHOLD_K, durasi_power
         )
         
     # Tentukan indeks sampel awal dan akhir segmen aktif dengan margin keamanan
-    blok_awal = max(0, aktif[0] - margin_blok)
-    blok_akhir = min(nblok, aktif[-1] + 1 + margin_blok)
+    blok_awal = max(0, aktif[0] - margin_awal)
+    blok_akhir = min(nblok, aktif[-1] + 1 + margin_akhir)
     awal = int(blok_awal * panjang)
     akhir = int(min(len(sinyal), blok_akhir * panjang))
     
